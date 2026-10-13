@@ -10,7 +10,10 @@ project:
     - report_2.qmd
     - report_3.qmd
 
-editor: visual
+editor:
+  mode: visual
+  markdown:
+    canonical: true
 
 format:
   html:
