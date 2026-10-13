@@ -20,6 +20,13 @@ format:
     theme: cosmo
     toc: true
     embed-resources: true
+    include-in-header:
+      text: |
+        <style>
+        dl dd {
+          margin-left: 1.5rem;
+        }
+        </style>
 
 execute:
   echo: true
