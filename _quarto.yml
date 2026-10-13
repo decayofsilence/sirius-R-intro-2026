@@ -1,0 +1,24 @@
+project:
+  title: "r-for-bioinformatics"
+  type: default
+  output-dir: _output
+  render:
+    - 01-r-basics.qmd
+    - 02-tidyverse.qmd
+    - 03-programming-and-tables.qmd
+
+editor: visual
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    embed-resources: true
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false
+  freeze: false
+  error: false
