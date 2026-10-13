@@ -6,3 +6,6 @@
 _output/
 _freeze/
 student/
+
+/.quarto/
+**/*.quarto_ipynb
