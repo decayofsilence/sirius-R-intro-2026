@@ -84,7 +84,7 @@ format: html
 
 A short description of the result.
 
-```{{r}}
+```{r}
 2 + 2
 ```
 ````
