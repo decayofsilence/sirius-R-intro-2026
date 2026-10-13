@@ -2,13 +2,14 @@
 # Выполняйте задания из корня проекта RStudio.
 # Сохраните скрипт, затем перенесите исходные данные и решения в report_1.qmd.
 
-
 # Задача 1.1
 # Начальное количество бактерий 2e6. Каждые 30 минут популяция увеличивается в
 # 1.8 раза, но одновременно теряется 10% клеток (гибель).
 # Каков будет размер популяции через три часа?
 
 # your code here
+
+new_pop <- 2e6 * (1.8 * 0.9)^6
 
 
 # Задача 1.2
@@ -22,6 +23,12 @@ fragments <- c(120, 340, 560, 230, 150, 410, 275, 630, 190, 520)
 
 # your code here
 
+length(fragments)
+
+max(fragments)
+min(fragments)
+
+sum(fragments)
 
 # Задача 1.3
 # Вы анализируете результаты масс-спектрометрии белка. Несколько пиков потеряны,
@@ -37,6 +44,17 @@ proteins <- c(50, 75, NA, 120, 60, 85, 95, NA, 110, 70, 65, NA)
 
 # your code here
 
+typeof(proteins); class(proteins)
+
+tna <- typeof(proteins[is.na(proteins)]); tna == typeof(NA)
+
+sum(proteins[!is.na(proteins)])
+
+proteins_imp <- proteins
+proteins_imp[is.na(proteins_imp)] <- mean(proteins[!is.na(proteins)])
+sum(proteins_imp) == sum(proteins[!is.na(proteins)])
+
+x <- as.numeric(c("50", "75", NA)); typeof(x) == typeof(c("50", "75", NA))
 
 # Задача 1.4
 # Вы наблюдаете рост бактериальной культуры. Измерения производятся каждые
@@ -46,6 +64,8 @@ proteins <- c(50, 75, NA, 120, 60, 85, 95, NA, 110, 70, 65, NA)
 cells <- c(100, 200, 400, 800, 1600, 3200, 6400, 12800)
 
 # your code here
+
+z <- cells[-1]/cells[-length(cells)]; all(z == 2)
 
 
 # Задача 1.5
@@ -71,7 +91,19 @@ sample_expr <- c(12.4, 15.1, NA, 9.8, 14.2, 11.7, 13.5, NA, 10.9,
                  16.3, 8.7, 12.8, NA, 14.9, 11.2, 13.1, 9.5, NA,
                  15.6, 10.4)
 
+
+
+
 # your code here
+
+max(sample_expr[!is.na(sample_expr)])
+min(sample_expr[!is.na(sample_expr)])
+
+
+complete <- !is.na(control_expr) & !is.na(sample_expr)
+mean(sample_expr[complete]) - mean(control_expr[complete])
+
+gene_names[sample_expr > control_expr & !is.na(sample_expr)]
 
 
 # Задача 2.1
@@ -83,3 +115,12 @@ sample_expr <- c(12.4, 15.1, NA, 9.8, 14.2, 11.7, 13.5, NA, 10.9,
 # Подпишите оси.
 
 # your code here
+
+cells <- c(100, 200, 400, 800, 1600, 3200, 6400, 12800)
+time <- seq(0, by = 40, length.out = length(cells))
+
+plot(time, cells, type = "b",xlab = "Время, мин", ylab = "Число бактерий", main = "Рост бактериальной культуры")
+
+
+hist(fragments,xlab = "Длина фрагмента, п.н.",ylab = "Число фрагментов",main = "Распределение длин фрагментов ДНК")
+
