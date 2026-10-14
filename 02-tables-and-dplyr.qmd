@@ -255,7 +255,35 @@ source("prepare_data.R", local = new.env())
 - Совпадают ли названия столбцов образцов с идентификаторами в метаданных?
 
 ```{r}
-# your code here
+measurements <- read_csv("data/airway_measurements.csv")
+samples <- read_csv("data/airway_samples.csv")
+genes <- read_csv("data/airway_genes.csv")
+
+str(measurements); str(samples); str(genes)
+```
+
+```{r}
+nrow(measurements)        
+ncol(measurements) - 1    
+nrow(samples)             
+nrow(genes)  
+```
+
+```{r}
+length(unique(measurements$ensgene)) == length(measurements$ensgene)
+length(unique(genes$ensgene)) == length(genes$ensgene)
+length(unique(samples$sample_id)) == length(samples$sample_id)
+```
+
+```{r}
+sample_cols <- measurements |>
+  select(-ensgene) |>
+  names()
+
+sample_cols
+
+setequal(sample_cols, samples$sample_id)  
+identical(sample_cols, samples$sample_id) 
 ```
 
 ### Задача 2
@@ -278,6 +306,19 @@ example_long
 
 ```{r}
 # your code here
+measurements_long <- measurements |>
+  pivot_longer(-ensgene, names_to = "sample_id", values_to = "measurement")
+
+measurements_long
+nrow(measurements_long)
+```
+
+```{r}
+measurements_wide <- measurements_long |>
+  pivot_wider(names_from = sample_id, values_from = measurement)
+
+measurements_wide
+setequal(measurements_wide, measurements)
 ```
 
 ### Задача 3
@@ -289,6 +330,14 @@ example_long
 
 ```{r}
 # your code here
+annotated <- measurements_long |>
+  left_join(samples, by = "sample_id")
+nrow(annotated)
+
+annotated <- measurements_long |>
+  left_join(genes, by = "ensgene")
+nrow(annotated)
+annotated
 ```
 
 ### Задача 4
@@ -299,5 +348,21 @@ example_long
 - В каждой клеточной линии сравните медианы между `control` и `treated`. Одинаково ли направление различий?
 
 ```{r}
-# your code here
+# your code her
+sample_summary <- annotated |> 
+  filter(biotype == "protein_coding") |> 
+  group_by(sample_id) |> 
+  summarise(mean = mean(measurement),
+            median = median(measurement),
+            iqr = IQR(measurement)) |> 
+  left_join(samples, by = 'sample_id')
+
+sample_summary
+```
+
+```{r}
+sample_summary |>
+  select(celltype, dex, median) |>
+  pivot_wider(names_from = dex, values_from = median) |>
+  mutate(diff = treated - control)
 ```
