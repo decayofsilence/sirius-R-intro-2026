@@ -4,8 +4,8 @@ project:
   output-dir: _output
   render:
     - 01-r-basics.qmd
-    - 02-tidyverse.qmd
-    - 03-programming-and-tables.qmd
+    - 02-tables-and-dplyr.qmd
+    - 03-code-and-plots.qmd
     - report_1.qmd
     - report_2.qmd
     - report_3.qmd
