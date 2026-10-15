@@ -25,14 +25,19 @@ library(palmerpenguins)
 
 ```{r}
 set.seed(42)
+
 light <- sample(0:100, 1)
 temp <- sample(-10:45, 1)
 humidity <- sample(0:100, 1)
 
+glc <- 0
+
 # your code here
 
-#cat("Light: ", light, ", temperature: ", temp, ", humidity: ", humidity,
-#    " => glucose: ", glc, "\n", sep = "")
+cat(sprintf(
+  "Light: %d, temperature: %d, humidity: %d => glucose: %g\n",
+  light, temp, humidity, glc
+))
 ```
 
 ### Задача 2
@@ -63,7 +68,7 @@ df <- penguins
 
 ### Задача 1
 
-***Коэффициент вариации*** показывает степень изменчивости по отношению к среднему показателю выборки:
+***Коэффициент вариации*** показывает степень изменчивости по отношению к среднему значению выборки:
 
 $$
 CV = \frac{SD}{\overline{x}} \cdot 100\%.
