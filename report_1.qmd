@@ -138,7 +138,14 @@ min(sample_expr[!is.na(sample_expr)])
 ```{r}
 #| label: task-1-5-mean
 complete <- !is.na(control_expr) & !is.na(sample_expr)
-mean(sample_expr[complete]) - mean(control_expr[complete])
+
+mean_control <- mean(control_expr[complete])
+mean_sample <- mean(sample_expr[complete])
+mean_diff <- mean_sample - mean_control
+
+mean_control
+mean_sample
+mean_diff
 ```
 
 **Гены с повышенной экспрессией.** Сравниваем только гены без пропусков: `NA > x` даёт `NA`, поэтому условие `complete` обязательно.

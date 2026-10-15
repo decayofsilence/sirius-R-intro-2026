@@ -63,7 +63,28 @@ cat(sprintf(
 dna <- 0.1
 primers <- 100
 
-# your code here
+n_cycles <- 20
+dna_history <- numeric(n_cycles)
+primers_history <- numeric(n_cycles)
+
+for (x in seq_len(n_cycles)) {
+  needed <- 0.1 * (0.9 * dna)         
+  
+  if (primers >= needed) {
+    dna <- dna * 1.9                  
+    primers <- primers - needed
+  } else {
+    dna <- dna + 10 * primers         
+    primers <- 0
+  }
+  
+  dna_history[x] <- dna
+  primers_history[x] <- primers
+}
+
+dna_history[n_cycles]                 
+which(primers_history == 0)[1]
+dna
 ```
 
 ------------------------------------------------------------------------
@@ -87,6 +108,11 @@ $$CV = \frac{SD}{\overline{x}} \cdot 100\%.$$
 
 ```{r}
 # your code here
+by_species <- split(df, df$species)
+
+sapply(by_species, function(d) {
+  sd(d$body_mass_g, na.rm = TRUE) / mean(d$body_mass_g, na.rm = TRUE) * 100
+})
 ```
 
 ### Задача 2
@@ -101,6 +127,20 @@ $$CV = \frac{SD}{\overline{x}} \cdot 100\%.$$
 
 ```{r}
 # your code here
+numer_cols <- select(df, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g)
+
+counts <- apply(numer_cols, 2, function(x) {
+  q1 <- quantile(x, 0.25, na.rm = TRUE)
+  q3 <- quantile(x, 0.75, na.rm = TRUE)
+  c(
+    before_q1 = sum(x < q1, na.rm = TRUE),
+    q1_to_q3 = sum(x >= q1 & x <= q3, na.rm = TRUE),
+    after_q3 = sum(x > q3, na.rm = TRUE)
+  )
+})
+
+counts
+prop.table(counts, margin = 2)  
 ```
 
 ------------------------------------------------------------------------
@@ -119,6 +159,16 @@ df <- drop_na(df)
 
 ```{r}
 # your code here
+ggplot(df,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           colour = species,
+           size = body_mass_g)) +
+  geom_point(alpha = 0.5) +
+  labs(title = 'Диаграмма рассеяния длины и глубины клюва',
+    x = 'Длина клюва, мм',
+    y = 'Глубина клюва, мм') +
+  theme_minimal()
 ```
 
 ### Задача 2
@@ -127,6 +177,18 @@ df <- drop_na(df)
 
 ```{r}
 # your code here
+ggplot(df, 
+       aes(x = flipper_length_mm, 
+           fill = species)) +
+  geom_histogram(aes(y = after_stat(density)),
+                 binwidth = 3, 
+                 position = "identity", 
+                 alpha = 0.7) +
+  geom_density(alpha = 0.3) +
+  labs(x = "Длина ласта, мм", 
+       y = "Плотность", 
+       fill = "Вид") +
+  theme_minimal()
 ```
 
 ### Задача 3
@@ -135,6 +197,16 @@ df <- drop_na(df)
 
 ```{r}
 # your code here
+ggplot(df, 
+       aes(x = species,
+           y = body_mass_g,
+           colour = species)) +
+  geom_boxplot(alpha = 0.5) +
+  geom_jitter() +
+  labs(x = 'Вид',
+       y = 'Масса тела, г',
+       title = '') + 
+  theme_minimal()
 ```
 
 ### Задача 4
@@ -147,4 +219,13 @@ df <- drop_na(df)
 
 ```{r}
 # your code here
+ggplot(df,
+       aes(x = bill_length_mm,
+           y = body_mass_g,
+           colour = species)) +
+  geom_point() +
+  facet_wrap(df$sex) +
+  labs(x = 'Длина клюва, мм',
+       y = 'Масса тела, г') +
+  theme_minimal()
 ```
