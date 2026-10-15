@@ -31,8 +31,8 @@ humidity <- sample(0:100, 1)
 
 # your code here
 
-#cat("Light: ", light, ", temperature: ", temp, ", humidity: ", humidity,
-#    " => glucose: ", glc, "\n", sep = "")
+cat("Light: ", light, ", temperature: ", temp, ", humidity: ", humidity,
+    " => glucose: ", glc, "\n", sep = "")
 ```
 
 ### Задача 2
